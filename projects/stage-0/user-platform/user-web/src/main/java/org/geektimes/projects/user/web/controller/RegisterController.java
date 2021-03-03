@@ -21,7 +21,8 @@ import javax.ws.rs.Path;
 public class RegisterController  implements PageController {
     @GET
     @POST
-    @Path("/register") // /hello/world -> HelloWorldController
+    @Path("/register") // /user/register -> RegisterController
+
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Throwable {
         return "login-form.jsp";
     }

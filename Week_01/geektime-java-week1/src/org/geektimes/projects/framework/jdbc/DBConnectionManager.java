@@ -1,21 +1,22 @@
-package org.geektimes.projects.user.sql;
+package org.geektimes.projects.framework.jdbc;
 
-import org.geektimes.projects.user.domain.User;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
+import org.geektimes.projects.user.entity.User;
+/**
+* @author edd1225
+*/
 public class DBConnectionManager {
 
     private Connection connection;
@@ -28,8 +29,6 @@ public class DBConnectionManager {
         return this.connection;
     }
 
-
-
     public void releaseConnection() {
         if (this.connection != null) {
             try {
@@ -40,46 +39,46 @@ public class DBConnectionManager {
         }
     }
 
-    public static final String DROP_USERS_TABLE_DDL_SQL = "DROP TABLE users";
+    public static final String DROP_USERS_TABLE_DDL_SQL = "DROP TABLE  users";
 
     public static final String CREATE_USERS_TABLE_DDL_SQL = "CREATE TABLE users(" +
             "id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
             "name VARCHAR(16) NOT NULL, " +
             "password VARCHAR(64) NOT NULL, " +
             "email VARCHAR(64) NOT NULL, " +
-            "phoneNumber VARCHAR(64) NOT NULL" +
+            "phone VARCHAR(64) NOT NULL" +
             ")";
 
-    public static final String INSERT_USER_DML_SQL = "INSERT INTO users(name,password,email,phoneNumber) VALUES " +
+    public static final String INSERT_USER_DML_SQL = "INSERT INTO users(name,password,email,phone) VALUES " +
             "('A','******','a@gmail.com','1') , " +
             "('B','******','b@gmail.com','2') , " +
             "('C','******','c@gmail.com','3') , " +
             "('D','******','d@gmail.com','4') , " +
             "('E','******','e@gmail.com','5')";
+    
+    public static final String REGISTER_USER_DML_SQL = "INSERT INTO users(name,password,email,phone) VALUES(?,?,?,?)";
 
 
     public static void main(String[] args) throws Exception {
 //        通过 ClassLoader 加载 java.sql.DriverManager -> static 模块 {}
-                 // DriverManager.setLogWriter(new PrintWriter(System.out));
+//        DriverManager.setLogWriter(new PrintWriter(System.out));
 //
-       Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-      //  Driver driver = DriverManager.getDriver("jdbc:derby:/db/user-platform;create=true");
-      //  Connection connection = driver.connect("jdbc:derby:/db/user-platform;create=true", new Properties());
+        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+//        Driver driver = DriverManager.getDriver("jdbc:derby:/db/user-platform;create=true");
+//        Connection connection = driver.connect("jdbc:derby:/db/user-platform;create=true", new Properties());
 
-//        String databaseURL = "jdbc:derby:/db/user-platform;create=true";
-//
-        String databaseURL =  "jdbc:derby:/Users/qianjiang/tmp/geekbang-lessons/projects/db/user-platform;create=true";
+        String databaseURL = "jdbc:derby:user-platform;create=true";
         Connection connection = DriverManager.getConnection(databaseURL);
 
         Statement statement = connection.createStatement();
         // 删除 users 表
-       // System.out.println(statement.execute(DROP_USERS_TABLE_DDL_SQL)); // false
+//        System.out.println(statement.execute(DROP_USERS_TABLE_DDL_SQL)); // false
         // 创建 users 表
         System.out.println(statement.execute(CREATE_USERS_TABLE_DDL_SQL)); // false
         System.out.println(statement.executeUpdate(INSERT_USER_DML_SQL));  // 5
 
         // 执行查询语句（DML）
-        ResultSet resultSet = statement.executeQuery("SELECT id,name,password,email,phoneNumber FROM users");
+        ResultSet resultSet = statement.executeQuery("SELECT id,name,password,email,phone FROM users");
 
         // BeanInfo
         BeanInfo userBeanInfo = Introspector.getBeanInfo(User.class, Object.class);
