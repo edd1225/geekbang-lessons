@@ -1,9 +1,15 @@
 package org.geektimes.projects.user.web.filter;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 
 /**
  * 字符编码 Filter
@@ -18,6 +24,7 @@ public class CharsetEncodingFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
         this.encoding = filterConfig.getInitParameter("encoding");
         this.servletContext = filterConfig.getServletContext();
+
     }
 
     @Override
@@ -35,6 +42,8 @@ public class CharsetEncodingFilter implements Filter {
 
         // 执行过滤链
         chain.doFilter(request,response);
+
+
     }
 
     @Override

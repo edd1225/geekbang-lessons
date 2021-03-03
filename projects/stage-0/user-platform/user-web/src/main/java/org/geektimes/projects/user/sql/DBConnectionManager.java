@@ -2,6 +2,10 @@ package org.geektimes.projects.user.sql;
 
 import org.geektimes.projects.user.domain.User;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -23,6 +27,8 @@ public class DBConnectionManager {
     public Connection getConnection() {
         return this.connection;
     }
+
+
 
     public void releaseConnection() {
         if (this.connection != null) {
@@ -54,18 +60,20 @@ public class DBConnectionManager {
 
     public static void main(String[] args) throws Exception {
 //        通过 ClassLoader 加载 java.sql.DriverManager -> static 模块 {}
-//        DriverManager.setLogWriter(new PrintWriter(System.out));
+                 // DriverManager.setLogWriter(new PrintWriter(System.out));
 //
-//        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-//        Driver driver = DriverManager.getDriver("jdbc:derby:/db/user-platform;create=true");
-//        Connection connection = driver.connect("jdbc:derby:/db/user-platform;create=true", new Properties());
+       // Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+      //  Driver driver = DriverManager.getDriver("jdbc:derby:/db/user-platform;create=true");
+      //  Connection connection = driver.connect("jdbc:derby:/db/user-platform;create=true", new Properties());
 
-        String databaseURL = "jdbc:derby:/db/user-platform;create=true";
+//        String databaseURL = "jdbc:derby:/db/user-platform;create=true";
+//
+        String databaseURL =  "jdbc:derby:/Users/qianjiang/tmp/geekbang-lessons/projects/db/user-platform;create=true";
         Connection connection = DriverManager.getConnection(databaseURL);
 
         Statement statement = connection.createStatement();
         // 删除 users 表
-        System.out.println(statement.execute(DROP_USERS_TABLE_DDL_SQL)); // false
+       // System.out.println(statement.execute(DROP_USERS_TABLE_DDL_SQL)); // false
         // 创建 users 表
         System.out.println(statement.execute(CREATE_USERS_TABLE_DDL_SQL)); // false
         System.out.println(statement.executeUpdate(INSERT_USER_DML_SQL));  // 5
