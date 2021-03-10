@@ -68,7 +68,7 @@ public class DBConnectionManager {
 
 //        String databaseURL = "jdbc:derby:/db/user-platform;create=true";
 //
-        String databaseURL =  "jdbc:derby:/Users/qianjiang/tmp/geekbang-lessons/projects/db/user-platform;create=true";
+        String databaseURL =  "jdbc:derby:db/user-platform;create=true";
         Connection connection = DriverManager.getConnection(databaseURL);
 
         Statement statement = connection.createStatement();
