@@ -18,25 +18,30 @@ import static javax.persistence.GenerationType.AUTO;
 @Table(name = "users")
 public class User implements Serializable {
 
-    @Id
+   @Id
     @GeneratedValue(strategy = AUTO)
-    @NotNull
+//    @NotNull
+    @Min(1)
+    // 必须大于 0 的整数
     private Long id;
 
     @Column
     private String name;
 
     @Column
-    @Max(32)
-    @Min(6)
+    @Length(min = 6, max = 32)
+    // 6-32 位
     private String password;
 
     @Column
+    @Email
     private String email;
 
     @Column
+    @Length(min = 11, max = 11 ,message = "手机号长度必须是11")
+    @NotNull(message = "手机号不允许为空")
+    // 采用中国大陆方式（11 位校验）
     private String phoneNumber;
-
     public Long getId() {
         return id;
     }

@@ -32,7 +32,8 @@ Id：必须大于 0 的整数
     private String email;
 
     @Column
-    @Length(min = 11, max = 11)
+    @Length(min = 11, max = 11 ,message = "手机号长度必须是11")
+    @NotNull(message = "手机号不允许为空")
     // 采用中国大陆方式（11 位校验）
     private String phoneNumber;
 
