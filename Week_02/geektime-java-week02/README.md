@@ -7,6 +7,8 @@
 Id：必须大于 0 的整数
 密码：6-32 位 电话号码: 采用中国大陆方式（11 位校验）
 
+添加 hibernate 验证 框架 在maven 的pom
+
 
     @Id
     @GeneratedValue(strategy = AUTO)
